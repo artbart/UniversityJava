@@ -102,7 +102,7 @@ public class TestLinkedDeque {
         linkedDeque.add(4);
 
         Object[] newArr=linkedDeque.toArray();
-        Integer[] newArrI= (Integer[]) linkedDeque.toArray(new Integer[4]);
+        Integer[] newArrI= linkedDeque.toArray(new Integer[linkedDeque.size()]);
         for (int i=0; i<arr.length; i++){
             Assert.assertEquals(arr[i],newArr[i]);
             Assert.assertEquals(arr[i],newArrI[i]);

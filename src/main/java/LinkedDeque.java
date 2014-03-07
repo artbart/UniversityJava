@@ -126,10 +126,11 @@ public class LinkedDeque<E> implements Collection<E> {
 
     @Override
     public <T> T[] toArray(T[] a) {
+        T[] arr=(T[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
         Iterator<E> it=iterator();
         int ind=0;
-        while (it.hasNext()) a[ind++]= (T) it.next();
-        return a;
+        while (it.hasNext()) arr[ind++]= (T) it.next();
+        return arr;
     }
 
     @Override
