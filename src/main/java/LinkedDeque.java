@@ -3,20 +3,20 @@ import java.util.*;
 /**
  * Created by artbart on 3/7/14.
  */
-public class LinkedDeque implements Collection<Integer> {
+public class LinkedDeque<E> implements Collection<E> {
     private class Node{
-        Integer val;
+        E val;
         Node next;
         Node prev;
 
         private Node() {
         }
-        private Node(Integer val) {
+        private Node(E val) {
             this.val = val;
         }
     }
 
-    private class LinkedDequeIterator implements Iterator<Integer>{
+    private class LinkedDequeIterator implements Iterator<E>{
         private Node current;
         private boolean isRemoved;
 
@@ -31,7 +31,7 @@ public class LinkedDeque implements Collection<Integer> {
         }
 
         @Override
-        public Integer next() {
+        public E next() {
             if (current.next==tail) throw new NoSuchElementException();
             current=current.next;
             isRemoved=false;
@@ -60,32 +60,32 @@ public class LinkedDeque implements Collection<Integer> {
     }
 
     // deque
-    public void addFirst(Integer integer){
-        Node node=new Node(integer);
+    public void addFirst(E elem){
+        Node node=new Node(elem);
         insertAfter(head, node);
         size++;
     }
-    public void addLast(Integer integer){
-        add(integer);
+    public void addLast(E elem){
+        add(elem);
     }
 
-    public Integer getFirst(){
+    public E getFirst(){
         if (size==0) throw new NoSuchElementException();
         return head.next.val;
     }
-    public Integer getLast(){
+    public E getLast(){
         if (size==0) throw new NoSuchElementException();
         return tail.prev.val;
     }
 
 
-    public Integer removeFirst(){
+    public E removeFirst(){
         if (size==0) throw new NoSuchElementException();
         Node node=head.next;
         removeNode(node);
         return node.val;
     }
-    public Integer removeLast(){
+    public E removeLast(){
         if (size==0) throw new NoSuchElementException();
         Node node=tail.prev;
         removeNode(node);
@@ -111,14 +111,14 @@ public class LinkedDeque implements Collection<Integer> {
     }
 
     @Override
-    public Iterator<Integer> iterator() {
+    public Iterator<E> iterator() {
         return new LinkedDequeIterator();
     }
 
     @Override
     public Object[] toArray() {
-        Integer[] arr=new Integer[size];
-        Iterator<Integer> it=iterator();
+        Object[] arr=new Object[size];
+        Iterator<E> it=iterator();
         int ind=0;
         while (it.hasNext()) arr[ind++]=it.next();
         return arr;
@@ -126,16 +126,15 @@ public class LinkedDeque implements Collection<Integer> {
 
     @Override
     public <T> T[] toArray(T[] a) {
-        Integer[] arr=new Integer[size];
-        Iterator<Integer> it=iterator();
+        Iterator<E> it=iterator();
         int ind=0;
-        while (it.hasNext()) arr[ind++]=it.next();
-        return (T[]) arr;
+        while (it.hasNext()) a[ind++]= (T) it.next();
+        return a;
     }
 
     @Override
-    public boolean add(Integer integer) {
-        Node node=new Node(integer);
+    public boolean add(E elem) {
+        Node node=new Node(elem);
         insertBefore(tail,node);
         size++;
         return true;
@@ -158,8 +157,8 @@ public class LinkedDeque implements Collection<Integer> {
     }
 
     @Override
-    public boolean addAll(Collection<? extends Integer> c) {
-        for (Integer o : c) add(o);
+    public boolean addAll(Collection<? extends E> c) {
+        for (E o : c) add(o);
         return true;
     }
 
@@ -178,7 +177,7 @@ public class LinkedDeque implements Collection<Integer> {
     @Override
     public boolean retainAll(Collection<?> c) {
         boolean modified = false;
-        Iterator<Integer> it = iterator();
+        Iterator<E> it = iterator();
         while (it.hasNext()) {
             if (!c.contains(it.next())) {
                 it.remove();

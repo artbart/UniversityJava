@@ -10,7 +10,7 @@ import java.util.Iterator;
 public class TestLinkedDeque {
     @Test
     public void testSimpleOperations() throws Exception {
-        LinkedDeque linkedDeque=new LinkedDeque();
+        LinkedDeque<Integer> linkedDeque=new LinkedDeque<>();
 
         Assert.assertEquals("isEmpty new list",true,linkedDeque.isEmpty());
 
@@ -35,7 +35,7 @@ public class TestLinkedDeque {
 
     @Test
     public void testBulkOperations() throws Exception {
-        LinkedDeque linkedDeque=new LinkedDeque();
+        LinkedDeque<Integer> linkedDeque=new LinkedDeque<>();
         ArrayList<Integer> toAdd=new ArrayList<>();
         toAdd.add(1);
         toAdd.add(2);
@@ -94,7 +94,7 @@ public class TestLinkedDeque {
 
     @Test
     public void testToArray() throws Exception {
-        LinkedDeque linkedDeque=new LinkedDeque();
+        LinkedDeque<Integer> linkedDeque=new LinkedDeque<>();
         Integer[] arr=new Integer[]{1,2,3,4};
         linkedDeque.add(1);
         linkedDeque.add(2);
@@ -102,7 +102,7 @@ public class TestLinkedDeque {
         linkedDeque.add(4);
 
         Object[] newArr=linkedDeque.toArray();
-        Integer[] newArrI=linkedDeque.toArray(new Integer[4]);
+        Integer[] newArrI= (Integer[]) linkedDeque.toArray(new Integer[4]);
         for (int i=0; i<arr.length; i++){
             Assert.assertEquals(arr[i],newArr[i]);
             Assert.assertEquals(arr[i],newArrI[i]);
@@ -111,7 +111,7 @@ public class TestLinkedDeque {
 
     @Test
     public void testDequeOperations() throws Exception {
-        LinkedDeque linkedDeque=new LinkedDeque();
+        LinkedDeque<Integer> linkedDeque=new LinkedDeque<>();
         linkedDeque.addFirst(1);
         linkedDeque.addFirst(2);
         linkedDeque.addFirst(3);
