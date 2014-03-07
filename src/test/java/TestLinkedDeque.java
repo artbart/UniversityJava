@@ -108,4 +108,26 @@ public class TestLinkedDeque {
             Assert.assertEquals(arr[i],newArrI[i]);
         }
     }
+
+    @Test
+    public void testDequeOperations() throws Exception {
+        LinkedDeque linkedDeque=new LinkedDeque();
+        linkedDeque.addFirst(1);
+        linkedDeque.addFirst(2);
+        linkedDeque.addFirst(3);
+        Assert.assertEquals("getF", 3, (int)linkedDeque.getFirst());
+        Assert.assertEquals("removeF 1", 3, (int)linkedDeque.removeFirst());
+        Assert.assertEquals("removeF 2", 2, (int)linkedDeque.removeFirst());
+        Assert.assertEquals("removeF 3", 1, (int)linkedDeque.removeFirst());
+
+        linkedDeque.addLast(1);
+        linkedDeque.addLast(2);
+        linkedDeque.addLast(3);
+        Assert.assertEquals("getL", 3, (int)linkedDeque.getLast());
+        Assert.assertEquals("removeL 1", 3, (int)linkedDeque.removeLast());
+        Assert.assertEquals("removeL 2", 2, (int)linkedDeque.removeLast());
+        Assert.assertEquals("removeL 3", 1, (int)linkedDeque.removeLast());
+    }
+
+
 }

@@ -54,10 +54,46 @@ public class LinkedDeque implements Collection<Integer> {
     public LinkedDeque() {
         size=0;
         head=new Node();
-        head.next=tail;
         tail=new Node();
+        head.next=tail;
         tail.prev=head;
     }
+
+    // deque
+    public void addFirst(Integer integer){
+        Node node=new Node(integer);
+        insertAfter(head, node);
+        size++;
+    }
+    public void addLast(Integer integer){
+        add(integer);
+    }
+
+    public Integer getFirst(){
+        if (size==0) throw new NoSuchElementException();
+        return head.next.val;
+    }
+    public Integer getLast(){
+        if (size==0) throw new NoSuchElementException();
+        return tail.prev.val;
+    }
+
+
+    public Integer removeFirst(){
+        if (size==0) throw new NoSuchElementException();
+        Node node=head.next;
+        removeNode(node);
+        return node.val;
+    }
+    public Integer removeLast(){
+        if (size==0) throw new NoSuchElementException();
+        Node node=tail.prev;
+        removeNode(node);
+        return node.val;
+    }
+
+
+    // collection
 
     @Override
     public int size() {
@@ -165,6 +201,13 @@ public class LinkedDeque implements Collection<Integer> {
 
         oldNode.prev.next=newNode;
         oldNode.prev=newNode;
+    }
+
+    private void insertAfter(Node oldNode, Node newNode){
+        newNode.next=oldNode.next;
+        newNode.prev=oldNode; 
+        oldNode.next.prev=newNode;
+        oldNode.next=newNode;
     }
 
     private void removeNode(Node node){
