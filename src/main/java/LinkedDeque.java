@@ -61,6 +61,7 @@ public class LinkedDeque<E> implements Collection<E> {
 
     // deque
     public void addFirst(E elem){
+        if (elem==null) throw  new NullPointerException();
         Node node=new Node(elem);
         insertAfter(head, node);
         size++;
@@ -135,6 +136,7 @@ public class LinkedDeque<E> implements Collection<E> {
 
     @Override
     public boolean add(E elem) {
+        if (elem==null) throw  new NullPointerException();
         Node node=new Node(elem);
         insertBefore(tail,node);
         size++;
@@ -221,5 +223,20 @@ public class LinkedDeque<E> implements Collection<E> {
         while (node!=tail && !node.val.equals(o)) node=node.next;
         if (node!=tail) return node;
         return null;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof LinkedDeque)) return false;
+        Iterator tit=iterator();
+        Iterator nit=((LinkedDeque) obj).iterator();
+
+
+        while (tit.hasNext()){
+            if (!nit.hasNext()) return false;
+            if (!tit.next().equals(nit.next())) return false;
+        }
+
+        return !nit.hasNext();
     }
 }

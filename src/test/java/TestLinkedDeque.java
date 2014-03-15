@@ -129,5 +129,53 @@ public class TestLinkedDeque {
         Assert.assertEquals("removeL 3", 1, (int)linkedDeque.removeLast());
     }
 
+    @Test
+    public void testEquals() throws Exception {
+        LinkedDeque<Integer> linkedDeque1=new LinkedDeque<>();
+        linkedDeque1.addFirst(1);
+        linkedDeque1.addFirst(2);
+        linkedDeque1.addFirst(3);
+
+        LinkedDeque<Integer> linkedDeque2=new LinkedDeque<>();
+        linkedDeque2.addFirst(1);
+        linkedDeque2.addFirst(2);
+        linkedDeque2.addFirst(3);
+        Assert.assertEquals(true,linkedDeque1.equals(linkedDeque2));
+
+        linkedDeque1=new LinkedDeque<>();
+        linkedDeque1.addFirst(1);
+        linkedDeque1.addFirst(2);
+        linkedDeque1.addFirst(5);
+
+        linkedDeque2=new LinkedDeque<>();
+        linkedDeque2.addFirst(1);
+        linkedDeque2.addFirst(2);
+        linkedDeque2.addFirst(3);
+        Assert.assertEquals(false,linkedDeque1.equals(linkedDeque2));
+
+        linkedDeque1=new LinkedDeque<>();
+        linkedDeque1.addFirst(1);
+        linkedDeque1.addFirst(5);
+
+        linkedDeque2=new LinkedDeque<>();
+        linkedDeque2.addFirst(1);
+        linkedDeque2.addFirst(2);
+        linkedDeque2.addFirst(3);
+        Assert.assertEquals(false,linkedDeque1.equals(linkedDeque2));
+
+
+    }
+
+    @Test
+    public void testEquals1() throws Exception {
+        LinkedDeque<Integer> linkedDeque1=new LinkedDeque<>();
+        linkedDeque1.addFirst(1);
+        linkedDeque1.addFirst(2);
+
+        LinkedDeque<Integer> linkedDeque2=new LinkedDeque<>();
+        linkedDeque2.addFirst(1);
+        linkedDeque2.addFirst(2);
+        linkedDeque2.addFirst(3);
+    }
 
 }
