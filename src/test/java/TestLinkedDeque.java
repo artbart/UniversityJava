@@ -167,15 +167,11 @@ public class TestLinkedDeque {
     }
 
     @Test
-    public void testEquals1() throws Exception {
-        LinkedDeque<Integer> linkedDeque1=new LinkedDeque<>();
-        linkedDeque1.addFirst(1);
-        linkedDeque1.addFirst(2);
-
-        LinkedDeque<Integer> linkedDeque2=new LinkedDeque<>();
-        linkedDeque2.addFirst(1);
-        linkedDeque2.addFirst(2);
-        linkedDeque2.addFirst(3);
+    public void testToString() throws Exception {
+        LinkedDeque<Integer> linkedDeque=new LinkedDeque<>();
+        linkedDeque.addLast(1);
+        linkedDeque.addLast(2);
+        linkedDeque.addLast(3);
+        Assert.assertEquals("[1 2 3 ]", linkedDeque.toString());
     }
-
 }

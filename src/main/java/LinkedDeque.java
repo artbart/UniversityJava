@@ -239,4 +239,16 @@ public class LinkedDeque<E> implements Collection<E> {
 
         return !nit.hasNext();
     }
+
+    @Override
+    public String toString() {
+        Iterator<E> it=iterator();
+        StringBuilder sb=new StringBuilder();
+        sb.append("[");
+        while (it.hasNext()){
+            sb.append(it.next().toString()).append(" ");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
 }
