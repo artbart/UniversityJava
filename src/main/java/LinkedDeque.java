@@ -3,7 +3,7 @@ import java.util.*;
 /**
  * Created by artbart on 3/7/14.
  */
-public class LinkedDeque<E> implements Collection<E> {
+public class LinkedDeque<E> implements Deque<E> {
     private class Node {
         public E val;
         public Node next;
@@ -47,6 +47,36 @@ public class LinkedDeque<E> implements Collection<E> {
         }
     }
 
+    private class LinkedDequeDescendantIterator implements Iterator<E> {
+        private Node current;
+        private boolean isRemoved;
+
+        private LinkedDequeDescendantIterator() {
+            this.current = tail;
+            isRemoved = false;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current.prev != head;
+        }
+
+        @Override
+        public E next() {
+            if (current.prev == head) throw new NoSuchElementException();
+            current = current.prev;
+            isRemoved = false;
+            return current.val;
+        }
+
+        @Override
+        public void remove() {
+            if (isRemoved || current == tail) throw new IllegalStateException();
+            isRemoved = true;
+            removeNode(current);
+        }
+    }
+
     private int size;
     private final Node head;
     private final Node tail;
@@ -72,6 +102,18 @@ public class LinkedDeque<E> implements Collection<E> {
         add(elem);
     }
 
+    @Override
+    public boolean offerFirst(E e) {
+        addFirst(e);
+        return true;
+    }
+
+    @Override
+    public boolean offerLast(E e) {
+        addLast(e);
+        return true;
+    }
+
     public E getFirst() {
         if (size == 0) throw new NoSuchElementException();
         return head.next.val;
@@ -80,6 +122,42 @@ public class LinkedDeque<E> implements Collection<E> {
     public E getLast() {
         if (size == 0) throw new NoSuchElementException();
         return tail.prev.val;
+    }
+
+    @Override
+    public E peekFirst() {
+        if (size==0) return null;
+        return getFirst();
+    }
+
+    @Override
+    public E peekLast() {
+        if (size==0) return null;
+        return getLast();
+    }
+
+    @Override
+    public boolean removeFirstOccurrence(Object o) {
+        Iterator<E> it=iterator();
+        while (it.hasNext()){
+            if (it.next().equals(o)){
+                it.remove();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean removeLastOccurrence(Object o) {
+        Iterator<E> it=descendingIterator();
+        while (it.hasNext()){
+            if (it.next().equals(o)){
+                it.remove();
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -95,6 +173,18 @@ public class LinkedDeque<E> implements Collection<E> {
         Node node = tail.prev;
         removeNode(node);
         return node.val;
+    }
+
+    @Override
+    public E pollFirst() {
+        if (size==0) return null;
+        return removeFirst();
+    }
+
+    @Override
+    public E pollLast() {
+        if (size==0) return null;
+        return removeLast();
     }
 
 
@@ -118,6 +208,11 @@ public class LinkedDeque<E> implements Collection<E> {
     @Override
     public Iterator<E> iterator() {
         return new LinkedDequeIterator();
+    }
+
+    @Override
+    public Iterator<E> descendingIterator() {
+        return new LinkedDequeDescendantIterator();
     }
 
     @Override
@@ -151,6 +246,41 @@ public class LinkedDeque<E> implements Collection<E> {
         insertBefore(tail, node);
         size++;
         return true;
+    }
+
+    @Override
+    public boolean offer(E e) {
+        return offerLast(e);
+    }
+
+    @Override
+    public E remove() {
+        return removeFirst();
+    }
+
+    @Override
+    public E poll() {
+        return pollFirst();
+    }
+
+    @Override
+    public E element() {
+        return getFirst();
+    }
+
+    @Override
+    public E peek() {
+        return peekFirst();
+    }
+
+    @Override
+    public void push(E e) {
+        addFirst(e);
+    }
+
+    @Override
+    public E pop() {
+        return removeFirst();
     }
 
     @Override
