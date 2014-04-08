@@ -2,8 +2,23 @@ import java.util.*;
 
 /**
  * Created by artbart on 3/7/14.
+ * LinkedDeque linear collection that supports element insertion and removal at
+ * both ends. For storing element two way linkedlist is used.
+ * <p/>
+ * Methods:
+ * <ul>
+ * <li>addFirst, addLast, getFirst, getLast, pollFirst, pollLast, peekFirst, peekLast - O(1)</li>
+ * <li>size, isEmpty - O(1)</li>
+ * <li>clear - O(N)</li>
+ * <li>toString - O(N)</li>
+ * </ul>
+ * <p/>
  */
 public class LinkedDeque<E> implements Deque<E> {
+
+    /**
+     * Represent Node in list
+     */
     private class Node {
         public E val;
         public Node next;
@@ -47,6 +62,9 @@ public class LinkedDeque<E> implements Deque<E> {
         }
     }
 
+    /**
+     * Descendant iterator for LinkedDeque
+     */
     private class LinkedDequeDescendantIterator implements Iterator<E> {
         private Node current;
         private boolean isRemoved;
@@ -126,21 +144,21 @@ public class LinkedDeque<E> implements Deque<E> {
 
     @Override
     public E peekFirst() {
-        if (size==0) return null;
+        if (size == 0) return null;
         return getFirst();
     }
 
     @Override
     public E peekLast() {
-        if (size==0) return null;
+        if (size == 0) return null;
         return getLast();
     }
 
     @Override
     public boolean removeFirstOccurrence(Object o) {
-        Iterator<E> it=iterator();
-        while (it.hasNext()){
-            if (it.next().equals(o)){
+        Iterator<E> it = iterator();
+        while (it.hasNext()) {
+            if (it.next().equals(o)) {
                 it.remove();
                 return true;
             }
@@ -150,9 +168,9 @@ public class LinkedDeque<E> implements Deque<E> {
 
     @Override
     public boolean removeLastOccurrence(Object o) {
-        Iterator<E> it=descendingIterator();
-        while (it.hasNext()){
-            if (it.next().equals(o)){
+        Iterator<E> it = descendingIterator();
+        while (it.hasNext()) {
+            if (it.next().equals(o)) {
                 it.remove();
                 return true;
             }
@@ -177,13 +195,13 @@ public class LinkedDeque<E> implements Deque<E> {
 
     @Override
     public E pollFirst() {
-        if (size==0) return null;
+        if (size == 0) return null;
         return removeFirst();
     }
 
     @Override
     public E pollLast() {
-        if (size==0) return null;
+        if (size == 0) return null;
         return removeLast();
     }
 
@@ -226,7 +244,7 @@ public class LinkedDeque<E> implements Deque<E> {
 
     @Override
     public <T> T[] toArray(T[] a) {
-        if (a==null) throw new NullPointerException();
+        if (a == null) throw new NullPointerException();
         T[] arr;
         if (a.length >= size()) {
             arr = a;
