@@ -7,10 +7,10 @@ import java.util.*;
  * <p/>
  * Methods:
  * <ul>
- * <li>addFirst, addLast, getFirst, getLast, pollFirst, pollLast, peekFirst, peekLast - O(1)</li>
- * <li>size, isEmpty - O(1)</li>
- * <li>clear - O(N)</li>
- * <li>toString - O(N)</li>
+ *     <li>addFirst, addLast, getFirst, getLast, pollFirst, pollLast, peekFirst, peekLast - O(1)</li>
+ *     <li>size, isEmpty - O(1)</li>
+ *     <li>clear - O(N)</li>
+ *     <li>toString - O(N)</li>
  * </ul>
  * <p/>
  */
@@ -355,6 +355,11 @@ public class LinkedDeque<E> implements Deque<E> {
         size = 0;
     }
 
+    /**
+     * Insert new node in list before the old node
+     * @param oldNode - node in list
+     * @param newNode - node for insertion
+     */
     private void insertBefore(Node oldNode, Node newNode) {
         newNode.prev = oldNode.prev;
         newNode.next = oldNode;
@@ -363,6 +368,11 @@ public class LinkedDeque<E> implements Deque<E> {
         oldNode.prev = newNode;
     }
 
+    /**
+     * Insert new node in list after the old node
+     * @param oldNode - node in list
+     * @param newNode - node to be inserted
+     */
     private void insertAfter(Node oldNode, Node newNode) {
         newNode.next = oldNode.next;
         newNode.prev = oldNode;
@@ -370,12 +380,22 @@ public class LinkedDeque<E> implements Deque<E> {
         oldNode.next = newNode;
     }
 
+    /**
+     * remove node from list
+     * @param node - node to be inserted
+     */
     private void removeNode(Node node) {
         node.prev.next = node.next;
         node.next.prev = node.prev;
         size--;
     }
 
+    /**
+     * Find node which key equals to the o
+     *
+     * @param o - object to be found
+     * @return null if there is no node with such key or Node if such node exists
+     */
     private Node findNode(Object o) {
         Node node = head.next;
         while (node != tail && !node.val.equals(o)) node = node.next;
