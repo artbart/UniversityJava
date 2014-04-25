@@ -1,3 +1,5 @@
+package com.tbart.university.linkedqueue;
+
 import java.util.AbstractCollection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;

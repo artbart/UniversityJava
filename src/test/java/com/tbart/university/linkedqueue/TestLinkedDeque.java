@@ -1,3 +1,6 @@
+package com.tbart.university.linkedqueue;
+
+import com.tbart.university.linkedqueue.LinkedDeque;
 import junit.framework.Assert;
 import org.junit.Test;
 

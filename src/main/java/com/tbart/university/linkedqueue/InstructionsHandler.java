@@ -1,3 +1,5 @@
+package com.tbart.university.linkedqueue;
+
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -20,14 +22,17 @@ public class InstructionsHandler {
     public InstructionsHandler(String inputFile, String outputFile) throws IOException {
         try {
             br = new BufferedReader(new FileReader(inputFile));
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             System.out.println(inputFile + " is not found");
             throw e;
         }
         try {
             bw = new BufferedWriter(new FileWriter(outputFile));
         } catch (IOException e) {
-            System.out.println(outputFile + " is not found");
+            System.out.println(outputFile + " IO exception");
+            if (br!=null) {
+                br.close();
+            }
             throw e;
         }
         linkedDeque = new LinkedDeque<>();
@@ -48,33 +53,34 @@ public class InstructionsHandler {
                 bw.write("[" + (ln++) + "]: " + executeInstruction(line) + "\n");
             }
         } catch (IOException e) {
-            System.out.println("cannot write into the file");
+            System.err.println("cannot write into the file");
         }
         shutDown();
     }
 
     private String executeInstruction(String instruction) {
+        if (instruction.length() == 0) return null;
+        String[] str = instruction.split(" ", 2);
+        String methodName = str[0];
+        Object res;
         try {
-            if (instruction.length() == 0) return null;
-            String[] str = instruction.split(" ", 2);
-            String methodName = str[0];
-            Object res;
             if (str.length == 1) {
                 Method method = linkedDeque.getClass().getMethod(methodName);
                 res=method.invoke(linkedDeque);
             } else {
                 Method method = linkedDeque.getClass().getMethod(methodName, Object.class);
-                res=method.invoke(linkedDeque, str[1]).toString();
+                res=method.invoke(linkedDeque, str[1]);
             }
-            if (res==null){
-                return "nothing was returned";
-            } else {
-                return res.toString();
-            }
-        } catch (NoSuchMethodException e) {
-            return "no such method in the collection";
-        } catch (InvocationTargetException |IllegalAccessException e) {
-            return "underlying method threw an exception";
+        } catch (NoSuchMethodException |IllegalAccessException e) {
+            return "no such method in the collection: " + methodName;
+        } catch (InvocationTargetException  e) {
+            return "underlying method threw an exception: " + methodName;
+        }
+
+        if (res==null){
+            return "nothing was returned";
+        } else {
+            return res.toString();
         }
     }
 

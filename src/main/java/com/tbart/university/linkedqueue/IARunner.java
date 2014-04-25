@@ -1,3 +1,5 @@
+package com.tbart.university.linkedqueue;
+
 import java.io.IOException;
 
 /**
