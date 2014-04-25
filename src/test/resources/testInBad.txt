@@ -1,0 +1,3 @@
+badAdd 1
+addWithoutArg
+removeFirst
