@@ -1,6 +1,6 @@
 package com.tbart.university.linkedqueue;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ public class InstructionHandlerTest {
 
     @Before
     public void setUp() throws Exception {
-        relativePath = getClass().getResource("").getPath();
+        relativePath = getClass().getClassLoader().getResource("").getPath();
     }
 
     @Test(expected = IOException.class)
@@ -39,9 +39,9 @@ public class InstructionHandlerTest {
     @Test
     public void testBad() throws Exception {
         ArrayList<String> expectedLines = new ArrayList<>();
-        expectedLines.add("[0]: no such method in the collection");
-        expectedLines.add("[1]: no such method in the collection");
-        expectedLines.add("[2]: underlying method threw an exception");
+        expectedLines.add("[0]: no such method in the collection: badAdd");
+        expectedLines.add("[1]: no such method in the collection: addWithoutArg");
+        expectedLines.add("[2]: underlying method threw an exception: removeFirst");
         checkOut(expectedLines, "testInBad.txt", "outBad.txt");
     }
 
