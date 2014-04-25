@@ -5,8 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * Created by arhont on 4/8/2014.
- *
+ * Created by tbart on 4/8/2014.
+ * <p/>
  * Reads instructions from file. Invoke appropriate methods of LinkedDeque object.
  * Writes results of invoking to the other file.
  */
@@ -30,7 +30,7 @@ public class InstructionsHandler {
             bw = new BufferedWriter(new FileWriter(outputFile));
         } catch (IOException e) {
             System.out.println(outputFile + " IO exception");
-            if (br!=null) {
+            if (br != null) {
                 br.close();
             }
             throw e;
@@ -42,7 +42,7 @@ public class InstructionsHandler {
      * Reads strings from inputFile and invoke methods of LinkedDeque object.
      * Results of each invoking is written into the outputFile.
      * Each line of the output file starts with [commandNumber]:
-     *
+     * <p/>
      * if methods returns nothing then "nothing was returned" will be written
      */
     public void handle() {
@@ -66,18 +66,18 @@ public class InstructionsHandler {
         try {
             if (str.length == 1) {
                 Method method = linkedDeque.getClass().getMethod(methodName);
-                res=method.invoke(linkedDeque);
+                res = method.invoke(linkedDeque);
             } else {
                 Method method = linkedDeque.getClass().getMethod(methodName, Object.class);
-                res=method.invoke(linkedDeque, str[1]);
+                res = method.invoke(linkedDeque, str[1]);
             }
-        } catch (NoSuchMethodException |IllegalAccessException e) {
+        } catch (NoSuchMethodException | IllegalAccessException e) {
             return "no such method in the collection: " + methodName;
-        } catch (InvocationTargetException  e) {
+        } catch (InvocationTargetException e) {
             return "underlying method threw an exception: " + methodName;
         }
 
-        if (res==null){
+        if (res == null) {
             return "nothing was returned";
         } else {
             return res.toString();
@@ -87,17 +87,17 @@ public class InstructionsHandler {
     /**
      * Cleaning:
      * <ul>
-     *     <li>Close file handlers</li>
+     * <li>Close file handlers</li>
      * </ul>
      */
-    public void shutDown(){
+    public void shutDown() {
         try {
-            if (br!=null) br.close();
+            if (br != null) br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
         try {
-            if (bw!=null) bw.close();
+            if (bw != null) bw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

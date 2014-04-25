@@ -3,16 +3,16 @@ package com.tbart.university.linkedqueue;
 import java.util.*;
 
 /**
- * Created by artbart on 3/7/14.
+ * Created by tbart on 3/7/14.
  * LinkedDeque linear collection that supports element insertion and removal at
  * both ends. For storing element two way linkedlist is used.
  * <p/>
  * Methods:
  * <ul>
- *     <li>addFirst, addLast, getFirst, getLast, pollFirst, pollLast, peekFirst, peekLast - O(1)</li>
- *     <li>size, isEmpty - O(1)</li>
- *     <li>clear - O(N)</li>
- *     <li>toString - O(N)</li>
+ * <li>addFirst, addLast, getFirst, getLast, pollFirst, pollLast, peekFirst, peekLast - O(1)</li>
+ * <li>size, isEmpty - O(1)</li>
+ * <li>clear - O(N)</li>
+ * <li>toString - O(N)</li>
  * </ul>
  * <p/>
  */
@@ -359,6 +359,7 @@ public class LinkedDeque<E> implements Deque<E> {
 
     /**
      * Insert new node in list before the old node
+     *
      * @param oldNode - node in list
      * @param newNode - node for insertion
      */
@@ -372,6 +373,7 @@ public class LinkedDeque<E> implements Deque<E> {
 
     /**
      * Insert new node in list after the old node
+     *
      * @param oldNode - node in list
      * @param newNode - node to be inserted
      */
@@ -384,6 +386,7 @@ public class LinkedDeque<E> implements Deque<E> {
 
     /**
      * remove node from list
+     *
      * @param node - node to be inserted
      */
     private void removeNode(Node node) {

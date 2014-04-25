@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Created by artbart on 3/15/14.
+ * Created by tbart on 3/15/14.
  */
 public class LinkedDequeACD<E> extends AbstractCollection<E> {
     private class Node {
@@ -63,6 +63,7 @@ public class LinkedDequeACD<E> extends AbstractCollection<E> {
         head.next = tail;
         tail.prev = head;
     }
+
     @Override
     public Iterator<E> iterator() {
         return new LinkedDequeIterator();
@@ -81,7 +82,6 @@ public class LinkedDequeACD<E> extends AbstractCollection<E> {
         size++;
         return true;
     }
-
 
 
     private void insertBefore(Node oldNode, Node newNode) {
