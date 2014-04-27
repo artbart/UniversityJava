@@ -13,6 +13,25 @@ import java.util.Random;
  */
 public class TaskHandlerTest {
     @Test
+    public void testEmptyList() throws Exception {
+        List<int[]> arrs=new ArrayList<>();
+        TaskHandler taskHandler=new TaskHandler(1);
+        int[] sorted = taskHandler.submitSort(arrs);
+        taskHandler.shutdown();
+        Assert.assertArrayEquals(null,sorted);
+    }
+
+
+    @Test
+    public void testEmptyArray() throws Exception {
+        List<int[]> arrs=new ArrayList<>();
+        int[] arr = new int[]{};
+        arrs.add(arr);
+
+        runTest(arrs,1);
+    }
+
+    @Test
     public void testOneArray() throws Exception {
         List<int[]> arrs=new ArrayList<>();
         int[] arr = new int[]{10, 23, 3, 8, 7, 6};
