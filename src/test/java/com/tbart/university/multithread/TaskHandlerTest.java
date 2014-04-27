@@ -3,6 +3,8 @@ package com.tbart.university.multithread;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,6 +80,34 @@ public class TaskHandlerTest {
             int poolSize = random.nextInt(threadPoolLimit - 1) + 1;
             runTest(arrs, poolSize);
         }
+
+    }
+
+    @Test
+    public void testPerformance() throws Exception {
+        TaskHandler taskHandler=new TaskHandler(4);
+
+        Random random = new Random();
+        int[] arr =  generateRandomArray(1000000, random);
+        long startTimeSSort = System.currentTimeMillis();
+        Arrays.sort(arr);
+        long endTimeSSort = System.currentTimeMillis();
+
+        List<int[]> arrs = new ArrayList<>();
+        arrs.add(Arrays.copyOfRange(arr, 0, 250000));
+        arrs.add(Arrays.copyOfRange(arr, 250000, 500000));
+        arrs.add(Arrays.copyOfRange(arr, 500000, 750000));
+        arrs.add(Arrays.copyOfRange(arr, 750000, 1000000));
+
+
+        long startTimeMTSort = System.currentTimeMillis();
+        int[] sorted = taskHandler.submitSort(arrs);
+        long endTimeMTSort = System.currentTimeMillis();
+
+        Logger logger = LogManager.getLogger();
+        logger.info("Standard sort time (ms) = " + (endTimeSSort - startTimeSSort) +
+                " Multithread sort time (ms) = " + (endTimeMTSort - startTimeMTSort));
+        taskHandler.shutdown();
 
     }
 
