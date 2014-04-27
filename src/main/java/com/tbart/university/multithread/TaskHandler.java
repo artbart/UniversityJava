@@ -25,7 +25,7 @@ public class TaskHandler {
     private int taskId;
     private String logPrefix;
 
-    public TaskHandler(int size){
+    public TaskHandler(int size) {
         fixedThreadPool = Executors.newFixedThreadPool(size);
         threadPool = new ExecutorCompletionService<>(fixedThreadPool);
         id = taskHandlerId.getAndIncrement();
@@ -37,12 +37,12 @@ public class TaskHandler {
 
     public int[] submitSortFromFile(String filePath) throws IOException {
         List<int[]> parts = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))){
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] splts = line.split(" ");
                 int[] numbers = new int[splts.length];
-                for (int i = 0; i < splts.length; i++){
+                for (int i = 0; i < splts.length; i++) {
                     numbers[i] = Integer.parseInt(splts[i]);
                 }
                 parts.add(numbers);
@@ -63,7 +63,7 @@ public class TaskHandler {
         logger.info(logPrefix + "%d tasks were submitted", threadsCount);
 
         int[] tmp = null;
-        while (threadsCount != 0){
+        while (threadsCount != 0) {
             try {
                 int[] newTmp = threadPool.take().get();
                 if (tmp == null) {
@@ -86,7 +86,7 @@ public class TaskHandler {
     }
 
 
-    public void shutdown(){
+    public void shutdown() {
         fixedThreadPool.shutdown();
         logger.info(logPrefix + "Task handler was killed");
     }
