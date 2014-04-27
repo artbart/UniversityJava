@@ -1,5 +1,10 @@
 package com.tbart.university.multithread;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -28,6 +33,22 @@ public class TaskHandler {
         logger.info(logPrefix + "Task handler was created [pool size = %d]", size);
 
         taskId = 0;
+    }
+
+    public int[] submitSortFromFile(String filePath) throws IOException {
+        List<int[]> parts = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))){
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] splts = line.split(" ");
+                int[] numbers = new int[splts.length];
+                for (int i = 0; i < splts.length; i++){
+                    numbers[i] = Integer.parseInt(splts[i]);
+                }
+                parts.add(numbers);
+            }
+        }
+        return submitSort(parts);
     }
 
     public int[] submitSort(List<int[]> parts) {

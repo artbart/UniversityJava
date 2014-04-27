@@ -1,6 +1,7 @@
 package com.tbart.university.multithread;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -12,6 +13,13 @@ import java.util.Random;
  * Created by arhont on 4/26/2014.
  */
 public class TaskHandlerTest {
+    private String relativePath;
+
+    @Before
+    public void setUp() throws Exception {
+        relativePath = getClass().getClassLoader().getResource("").getPath();
+    }
+
     @Test
     public void testEmptyList() throws Exception {
         List<int[]> arrs=new ArrayList<>();
@@ -105,4 +113,13 @@ public class TaskHandlerTest {
         taskHandler.shutdown();
     }
 
+    @Test
+    public void testFileApi() throws Exception {
+        TaskHandler taskHandler=new TaskHandler(3);
+        int[] sorted = taskHandler.submitSortFromFile(relativePath + "forSort.txt");
+        int[] expected = new int[]{1, 9, 10, 11, 13, 21, 21, 23, 33, 34, 55, 66, 123};
+        Assert.assertArrayEquals(expected, sorted);
+        taskHandler.shutdown();
+
+    }
 }
