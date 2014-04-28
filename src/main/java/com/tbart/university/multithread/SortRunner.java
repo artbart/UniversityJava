@@ -7,7 +7,10 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
- * Created by arhont on 4/26/2014.
+ * Created by tbart on 4/26/2014.
+ * <p/>
+ * Receive path to a file with number for sorting and size of thread poll.
+ * Run TaskHandler with received argument and log result.
  */
 public class SortRunner {
     public static void main(String[] args) {

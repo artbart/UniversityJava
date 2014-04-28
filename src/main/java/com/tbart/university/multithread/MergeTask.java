@@ -1,12 +1,20 @@
 package com.tbart.university.multithread;
 
 /**
- * Created by arhont on 4/26/2014.
+ * Created by tbart on 4/26/2014.
+ * <p/>
+ * This type of task receive two arrays and merger their into one,
+ * new arrays will be sorted.
+ * Main concept like in the merger part of merge sort.
  */
 public class MergeTask extends Task {
     private int[] data1;
     private int[] data2;
 
+    /**
+     * @param data1 - first array for merging
+     * @param data2 - second array for merging
+     */
     public MergeTask(int[] data1, int[] data2) {
         this.data1 = data1;
         this.data2 = data2;

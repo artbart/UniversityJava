@@ -102,7 +102,7 @@ public class TaskHandlerTest {
         long endTimeMTSort = System.currentTimeMillis();
 
         Logger logger = LogManager.getLogger();
-        logger.info("Standard sort time (ms) = " + (endTimeSSort - startTimeSSort) +
+        logger.info("Standard sort time (ms) = " + (endTimeSSort - startTimeSSort) + "; " +
                 " Multithread sort time (ms) = " + (endTimeMTSort - startTimeMTSort));
         taskHandler.shutdown();
 
