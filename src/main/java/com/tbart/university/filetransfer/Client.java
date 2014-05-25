@@ -6,6 +6,13 @@ import java.io.InputStreamReader;
 
 /**
  * Created by tbart on 5/25/2014.
+ * <p/>
+ * Initialize server side (waiting for connection)
+ * Start waiting user input from System.in
+ * <p/>
+ * If input start with shutdown, then shutdown server side and interrupt
+ * If input start with sent file, then the rest of string is considered as file name to send to server
+ * Otherwise just send a text message
  */
 public class Client {
     public static void main(String[] args) {

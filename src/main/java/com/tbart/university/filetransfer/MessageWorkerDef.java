@@ -8,7 +8,7 @@ import java.io.*;
 /**
  * Created by tbart on 5/25/2014.
  */
-public class MessageWorkerDef implements MessageWorker{
+public class MessageWorkerDef implements MessageWorker {
     public static final byte MESSAGE_TEXT = 0;
     public static final byte MESSAGE_FILE = 1;
 
@@ -22,6 +22,18 @@ public class MessageWorkerDef implements MessageWorker{
         this.resultOutput = new BufferedWriter(new OutputStreamWriter(outputStream));
     }
 
+    /**
+     * White text message to os in the following format:
+     * byte - version of the message
+     * UTF - name of sender
+     * byte - type of message (text)
+     * UTF - text
+     *
+     * @param os       - where to write a message
+     * @param text     - text of a message
+     * @param userName - - name of user, who sent a message
+     * @throws IOException
+     */
     @Override
     public void sentText(OutputStream os, String text, String userName) throws IOException {
         logger.info("sent text [text : %s]", text);
@@ -30,8 +42,24 @@ public class MessageWorkerDef implements MessageWorker{
         dos.writeUTF(userName);
         dos.writeByte(MessageWorkerDef.MESSAGE_TEXT);
         dos.writeUTF(text);
+        dos.flush();
+        os.flush();
     }
 
+
+    /**
+     * White file bytes to os in the following format:
+     * byte - version of the message
+     * UTF - name of sender
+     * byte - type of message (file)
+     * long - file size
+     * bytes[] - file bytes (file data)
+     *
+     * @param os       - where to write a message
+     * @param filePath - path to file to write
+     * @param userName - name of user, who sent a message
+     * @throws IOException
+     */
     @Override
     public void sentFile(OutputStream os, String filePath, String userName) throws IOException {
         File file = new File(filePath);
@@ -57,8 +85,17 @@ public class MessageWorkerDef implements MessageWorker{
         os.flush();
     }
 
+
+    /**
+     * Start parsing of message and than, determine whether file it or message
+     * and pass it to readFile or readMessage
+     *
+     * @param is -
+     * @return - true if message was written successfully
+     * @throws IOException
+     */
     @Override
-    public boolean readMessage(InputStream is) throws IOException  {
+    public boolean readMessage(InputStream is) throws IOException {
         DataInputStream dis = new DataInputStream(is);
 
         byte mVersion = dis.readByte();
@@ -71,7 +108,7 @@ public class MessageWorkerDef implements MessageWorker{
         byte mType = dis.readByte();
         logger.info("[type : %d]", mType);
 
-        switch (mType){
+        switch (mType) {
             case MESSAGE_TEXT:
                 readText(userName, dis);
                 break;
@@ -85,6 +122,13 @@ public class MessageWorkerDef implements MessageWorker{
         return true;
     }
 
+    /**
+     * Read text from dis and write into resultOutput
+     *
+     * @param userName - name of user, who sent a message
+     * @param dis      - DataInputStream from which text should be read
+     * @throws IOException
+     */
     private void readText(String userName, DataInputStream dis) throws IOException {
         String message = dis.readUTF();
         String toOut = String.format("%s: %s", userName, message);
@@ -92,6 +136,15 @@ public class MessageWorkerDef implements MessageWorker{
         writeToOut(toOut);
     }
 
+
+    /**
+     * Read file data from dis and write into the filesDirectory.
+     * Also print some information into resultOutput
+     *
+     * @param userName - name of user, who sent file
+     * @param dis      - is used
+     * @throws IOException
+     */
     private void readFile(String userName, DataInputStream dis) throws IOException {
         String fileName = dis.readUTF();
         int fileSize = (int) dis.readLong();
@@ -105,7 +158,7 @@ public class MessageWorkerDef implements MessageWorker{
     }
 
     private void writeToOut(String text) throws IOException {
-        synchronized (resultOutput){
+        synchronized (resultOutput) {
             resultOutput.write(text);
             resultOutput.write("\n");
             resultOutput.flush();

@@ -8,6 +8,10 @@ import java.net.Socket;
 
 /**
  * Created by tbart on 5/25/2014.
+ * <p/>
+ * Client part of network manager.
+ * <p/>
+ * Sends messages and files to server part using MessageWorker
  */
 public class ClientNetworkManager implements Closeable {
     private Logger logger = LogManager.getFormatterLogger(ClientNetworkManager.class);
@@ -24,6 +28,11 @@ public class ClientNetworkManager implements Closeable {
         this.messageWorker = messageWorker;
     }
 
+    /**
+     * Sends a text message to server using a socket
+     *
+     * @param text - text to sent
+     */
     public void sentText(String text) {
         logger.info("sent text [text : %s]", text);
 
@@ -34,6 +43,11 @@ public class ClientNetworkManager implements Closeable {
         }
     }
 
+    /**
+     * Sends a message with file to server using a socket
+     *
+     * @param filePath - path to file which need to be sent
+     */
     public void sentFile(String filePath) {
         logger.info("sent file [filePath : %s]", filePath);
 
