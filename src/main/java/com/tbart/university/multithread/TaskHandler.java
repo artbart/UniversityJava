@@ -71,28 +71,30 @@ public class TaskHandler {
      * @return - sorted array of all numbers from the @param parts
      */
     public int[] submitSort(List<int[]> parts) {
-        int newTaskId = taskId.getAndIncrement();
         int size = parts.size();
-        int threadsCount = size;
+        int aliveTaskCount = size;
         for (int[] part : parts) {
+            int newTaskId = taskId.getAndIncrement();
             Task task = new SortTask(part);
             task.setTaskId(newTaskId);
             threadPool.submit(task);
         }
 
-        logger.info(logPrefix + "%d tasks were submitted", threadsCount);
+        logger.info(logPrefix + "%d tasks were submitted", aliveTaskCount);
 
         int[] tmp = null;
-        while (threadsCount != 0) {
+        while (aliveTaskCount != 0) {
             try {
                 int[] newTmp = threadPool.take().get();
+                aliveTaskCount--;
                 if (tmp == null) {
                     tmp = newTmp;
-                    threadsCount--;
                 } else {
+                    int newTaskId = taskId.getAndIncrement();
                     Task task = new MergeTask(tmp, newTmp);
                     task.setTaskId(newTaskId);
                     threadPool.submit(task);
+                    aliveTaskCount++;
                     tmp = null;
                 }
             } catch (InterruptedException | ExecutionException e) {

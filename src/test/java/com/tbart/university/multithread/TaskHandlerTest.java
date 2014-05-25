@@ -84,17 +84,19 @@ public class TaskHandlerTest {
     public void testPerformance() throws Exception {
         TaskHandler taskHandler = new TaskHandler(4);
 
+        int size = 50000;
+
         Random random = new Random();
-        int[] arr = generateRandomArray(1000000, random);
+        int[] arr = generateRandomArray(size, random);
         long startTimeSSort = System.currentTimeMillis();
         Arrays.sort(arr);
         long endTimeSSort = System.currentTimeMillis();
 
         List<int[]> arrs = new ArrayList<>();
-        arrs.add(Arrays.copyOfRange(arr, 0, 250000));
-        arrs.add(Arrays.copyOfRange(arr, 250000, 500000));
-        arrs.add(Arrays.copyOfRange(arr, 500000, 750000));
-        arrs.add(Arrays.copyOfRange(arr, 750000, 1000000));
+        arrs.add(Arrays.copyOfRange(arr, 0, size/4));
+        arrs.add(Arrays.copyOfRange(arr, size/4, size/2));
+        arrs.add(Arrays.copyOfRange(arr, size/2, size*3/4));
+        arrs.add(Arrays.copyOfRange(arr, size*3/4, size));
 
 
         long startTimeMTSort = System.currentTimeMillis();

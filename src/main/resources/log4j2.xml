@@ -4,10 +4,14 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%c{2} : %line - %t] [%level]  - %msg%n"/>
         </Console>
+        <File name="MainLog" fileName="C:/logs/easytrack.log" immediateFlush="false" append="true">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%c{2} : %line - %t] [%level]  - %msg%n"/>
+        </File>
     </Appenders>
     <Loggers>
         <Root level="info">
             <AppenderRef ref="Console"/>
+            <AppenderRef ref="MainLog"/>
         </Root>
     </Loggers>
 </Configuration>
