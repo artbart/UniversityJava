@@ -26,9 +26,9 @@ public class ServerNetworkManager  implements Runnable{
     public void run() {
         try (ServerSocket serverSocket = new ServerSocket(serverPort)){
             logger.info("waiting for connections [port : %d]", serverPort);
-            while (true) {
+            while (!Thread.interrupted()) {
                 try (Socket socket = serverSocket.accept()){
-                    receiveConnection(socket);
+                   receiveConnection(socket);
                 }
             }
         } catch (IOException e) {
@@ -36,12 +36,14 @@ public class ServerNetworkManager  implements Runnable{
         }
     }
 
-    private void receiveConnection(Socket socket) {
-        logger.info("Connection from: %s", socket.getInetAddress().toString() );
+    private boolean receiveConnection(Socket socket) {
+        logger.info("Connection from: %s", socket.getInetAddress().toString());
+        boolean res = false;
         try (InputStream is = socket.getInputStream()){
-            messageWorker.readMessage(is);
+            res = messageWorker.readMessage(is);
         } catch (IOException e) {
             logger.error("Cannot read client data", e);
         }
+        return res;
     }
 }

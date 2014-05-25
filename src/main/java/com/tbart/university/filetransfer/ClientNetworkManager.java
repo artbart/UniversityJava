@@ -13,18 +13,22 @@ public class ClientNetworkManager {
     private Logger logger = LogManager.getFormatterLogger(ClientNetworkManager.class);
 
     private int serverPort;
+    private String serverIp;
+    private String userName;
+    private MessageWorker messageWorker;
 
-    public ClientNetworkManager(int serverPort) {
+    public ClientNetworkManager(int serverPort, String serverIp, String userName, MessageWorker messageWorker) {
         this.serverPort = serverPort;
+        this.serverIp = serverIp;
+        this.userName = userName;
+        this.messageWorker = messageWorker;
     }
 
-    public void sentText(String text){
+    public void sentText(String text) {
         logger.info("sent text [text : %s]", text);
-        try (Socket socket = new Socket("localhost", serverPort); OutputStream os = socket.getOutputStream()){
-            DataOutputStream dos = new DataOutputStream(os);
-            dos.writeByte(1);
-            dos.writeByte(MessageWorker.MESSAGE_TEXT);
-            dos.writeUTF(text);
+
+        try (Socket socket = new Socket(serverIp, serverPort); OutputStream os = socket.getOutputStream()) {
+            messageWorker.sentText(os, text, userName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -32,23 +36,9 @@ public class ClientNetworkManager {
 
     public void sentFile(String filePath) {
         logger.info("sent file [filePath : %s]", filePath);
-        File file = new File(filePath);
-        byte[] fileData = new byte[(int) file.length()];
 
-        try (FileInputStream fis = new FileInputStream(file)){
-            int realSize = fis.read(fileData);
-            logger.info("real file size : %d", realSize);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try (Socket socket = new Socket("localhost", serverPort); OutputStream os = socket.getOutputStream()){
-            DataOutputStream dos = new DataOutputStream(os);
-            dos.writeByte(1);
-            dos.writeByte(MessageWorker.MESSAGE_FILE);
-            dos.writeUTF(file.getName());
-            dos.writeLong(file.length());
-            dos.write(fileData);
+        try (Socket socket = new Socket(serverIp, serverPort); OutputStream os = socket.getOutputStream()) {
+            messageWorker.sentFile(os, filePath, userName);
         } catch (IOException e) {
             e.printStackTrace();
         }

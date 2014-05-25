@@ -5,8 +5,8 @@ package com.tbart.university.filetransfer;
  */
 public class ServerRunner {
     public static void main(String[] args) {
-        MessageWorker messageWorker = new MessageWorker("D:/tmp", System.out);
-        ServerNetworkManager serverNM = new ServerNetworkManager(9999, messageWorker);
+        MessageWorkerDef messageWorkerDef = new MessageWorkerDef("D:/tmp", System.out);
+        ServerNetworkManager serverNM = new ServerNetworkManager(9999, messageWorkerDef);
         new Thread(serverNM).start();
     }
 }
