@@ -15,7 +15,7 @@ public class MessageWorkerDef implements MessageWorker{
     private Logger logger = LogManager.getFormatterLogger(MessageWorkerDef.class);
 
     private String filesDirectory;
-    private BufferedWriter resultOutput;
+    private final BufferedWriter resultOutput;
 
     public MessageWorkerDef(String filesDirectory, OutputStream outputStream) {
         this.filesDirectory = filesDirectory;
@@ -95,10 +95,9 @@ public class MessageWorkerDef implements MessageWorker{
     private void readFile(String userName, DataInputStream dis) throws IOException {
         String fileName = dis.readUTF();
         int fileSize = (int) dis.readLong();
-        System.out.println(fileSize);
         byte[] fileData = new byte[fileSize];
         dis.readFully(fileData);
-        String toOut = String.format("%s: [file] [filePath : %s], [fileSize : %d]", userName, (filesDirectory + "/" + fileName), 1);
+        String toOut = String.format("%s: [file] [filePath : %s]", userName, (filesDirectory + "/" + fileName));
         logger.info(toOut);
         OutputStream output = new FileOutputStream(filesDirectory + "/" + fileName);
         output.write(fileData);
@@ -106,9 +105,11 @@ public class MessageWorkerDef implements MessageWorker{
     }
 
     private void writeToOut(String text) throws IOException {
-        resultOutput.write(text);
-        resultOutput.write("\n");
-        resultOutput.flush();
+        synchronized (resultOutput){
+            resultOutput.write(text);
+            resultOutput.write("\n");
+            resultOutput.flush();
+        }
     }
 
 }

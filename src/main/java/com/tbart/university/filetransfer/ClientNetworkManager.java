@@ -9,7 +9,7 @@ import java.net.Socket;
 /**
  * Created by tbart on 5/25/2014.
  */
-public class ClientNetworkManager {
+public class ClientNetworkManager implements Closeable {
     private Logger logger = LogManager.getFormatterLogger(ClientNetworkManager.class);
 
     private int serverPort;
@@ -44,4 +44,8 @@ public class ClientNetworkManager {
         }
     }
 
+    @Override
+    public void close() throws IOException {
+
+    }
 }

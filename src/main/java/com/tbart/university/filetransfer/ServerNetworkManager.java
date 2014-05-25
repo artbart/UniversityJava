@@ -3,6 +3,7 @@ package com.tbart.university.filetransfer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
@@ -11,11 +12,12 @@ import java.net.Socket;
 /**
  * Created by tbart on 5/25/2014.
  */
-public class ServerNetworkManager  implements Runnable{
+public class ServerNetworkManager implements Runnable, Closeable {
     private Logger logger = LogManager.getFormatterLogger(ServerNetworkManager.class);
 
     private int serverPort;
     private MessageWorker messageWorker;
+    private ServerSocket serverSocket;
 
     public ServerNetworkManager(int serverPort, MessageWorker messageWorker) {
         this.serverPort = serverPort;
@@ -24,15 +26,16 @@ public class ServerNetworkManager  implements Runnable{
 
     @Override
     public void run() {
-        try (ServerSocket serverSocket = new ServerSocket(serverPort)){
+        try {
+            serverSocket = new ServerSocket(serverPort);
             logger.info("waiting for connections [port : %d]", serverPort);
-            while (!Thread.interrupted()) {
+            while (true) {
                 try (Socket socket = serverSocket.accept()){
                    receiveConnection(socket);
                 }
             }
         } catch (IOException e) {
-            logger.error("Socket exception", e);
+            logger.info("Connection closed", e);
         }
     }
 
@@ -45,5 +48,12 @@ public class ServerNetworkManager  implements Runnable{
             logger.error("Cannot read client data", e);
         }
         return res;
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (serverSocket != null && !serverSocket.isClosed()){
+            serverSocket.close();
+        }
     }
 }
